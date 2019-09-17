@@ -13,46 +13,108 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<StatefulWidget> createState() {
+    return MyHomePageState();
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class MyHomePageState extends State<MyHomePage> {
+  int counter = 0;
+  var t = TestClass();
+  void increment() { 
+      counter = t.increment(counter);
+  }
 
-  void _incrementCounter() {
+  void decrement() {
+    if(counter > 0){
+       counter = t.decrement(counter);
+    }   
+  }
+
+  void refresh(){
     setState(() {
-      _counter++;
+      
     });
   }
-   
-  void _decrementCounter(){
+
+  void reset(){
     setState(() {
-      _counter--;
+       counter = 0; 
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Calculator"),
+      appBar: AppBar(
+        title: Text("Basic++"),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(15.0),
+                  alignment: Alignment.center,
+                  child: Center(
+                    child: Text(
+                      counter.toString(),
+                      style: TextStyle(
+                        fontSize: 35.0,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: OutlineButton(
+                    color: Colors.blueAccent,
+                    onPressed: increment,
+                    child: Text("INCREMENT"),
+                  ),
+                ),
+                Expanded(
+                  child: OutlineButton(
+                    color: Colors.redAccent,
+                    onPressed: decrement,
+                    child: Text("DECREMENT"),
+                  ),
+                ),
+                Expanded(
+                  child: OutlineButton(
+                    color: Colors.redAccent,
+                    onPressed: refresh,
+                    child: Text("REFRESH"),
+                  ),
+                ),
+                Expanded(
+                  child: OutlineButton(
+                    color: Colors.redAccent,
+                    onPressed: reset,
+                    child: Text("RESET"),
+                  ),
+                )
+              ],
+            )
+          ],
         ),
-        body: Container(          
-          padding: EdgeInsets.all(25.0),
-          child: Column(
-            children: <Widget>[
-              Text(_counter.toString()),
-              OutlineButton(
-                onPressed: () => _incrementCounter(),
-                child: Text("Increment"),
-              ),
-              OutlineButton(
-                onPressed: () => _decrementCounter(),
-                child: Text("Decrement"),
-              )
-            ],
-          ),
-        ));
+      ),
+    );
   }
+}
+
+class TestClass{
+   increment(x){
+     return x++;
+   }
+
+   decrement(x){
+     return x--;
+   }
 }
