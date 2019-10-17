@@ -1,27 +1,23 @@
+import 'package:base/util/Router.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: RaisedButton(
-        child: Text("Profiles"),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Profile()),
-          );
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Home"),
       ),
-    );
-  }
-}
-
-class Profile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text("Profile Page"),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            RaisedButton(
+              child: Text("Goto Settings"),
+              onPressed: () => Navigator.pushNamed(context, settingsRoute),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
