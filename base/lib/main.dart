@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import './util/Router.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // Force device orientation to portrait
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(App());
+}
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.blue),
-      onGenerateRoute: ,
+      onGenerateRoute: Router.generateRoute,
+      initialRoute: loginRoute,
     );
   }
 }
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
 
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Meter Reader"),
-      ),
-      body: null,
-    );
-  }
-}
