@@ -1,20 +1,31 @@
-import 'package:base/util/Router.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomeRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    void doNavigate(String route, dynamic obj) {
+      Navigator.pushNamed(context, route, arguments: obj);
+    }
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text('Home'),
       ),
-      body: Container(
+      body: Center(
         child: Column(
           children: <Widget>[
             RaisedButton(
-              child: Text("Goto Settings"),
-              onPressed: () => Navigator.pushNamed(context, settingsRoute),
-            )
+              child: Text('Juan Dela Cruz'),
+              onPressed: () {
+                doNavigate("/details", "0");
+              },
+            ),
+            RaisedButton(
+              child: Text('Juana Dela Cruz'),
+              onPressed: () {
+                doNavigate("/details", "1");
+              },
+            ),
           ],
         ),
       ),
