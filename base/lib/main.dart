@@ -1,107 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:base/widgets/transaction_list.dart';
-import 'package:base/widgets/new_transactions.dart';
-import 'package:base/models/transaction.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-void main() => runApp(MyApp());
+void main() => runApp(App());
 
-class MyApp extends StatelessWidget {
-   @override
+class App extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        accentColor: Colors.teal,
-      ),
-      home: MyHomePage(),
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> expenses = [
-    Transaction(
-      id: "001",
-      title: "New Shoes",
-      amount: 9.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: "002",
-      title: "Icecream",
-      amount: 0.99,
-      date: DateTime.now(),
-    )
-  ];
-
-  void _addNewTransaction(String itemName, double itemAmount) {
-    final newTransaction = Transaction(
-      title: itemName,
-      amount: itemAmount,
-      date: DateTime.now(),
-      id: DateTime.now().toString(),
-    );
-
-    setState(() {
-      expenses.add(newTransaction);
-    });
-  }
-
-  void _startAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet(
-      context: ctx,
-      builder: (_) {
-        return NewTransaction(_addNewTransaction);
-      },
-      backgroundColor: Colors.indigo,
-    );
+class _HomePageState extends State<HomePage> {
+  void initState(){
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("XPense"),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _startAddNewTransaction(context),
-            icon: Icon(
-              Icons.add,
-            ),
-          )
-        ],
+        title: Text("HTTP GET"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: Column(
+      body: Container(
+        child: FutureBuilder(
+          future: getData(),
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              return Container(child: Text("Data: ${snapshot.data}"),);
+            }
+            return Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  // Container(
-                  //   width: double.infinity,
-                  //   child: Card(
-                  //     color: Theme.of(context).primaryColor,
-                  //     child: Text("CHART!"),
-                  //     elevation: 5,
-                  //   ),
-                  // ),
-                  TransactionList(expenses),
+                  CircularProgressIndicator(),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
+            );
+          },
+        ),),
     );
   }
+}
+
+Future<dynamic> getData() async{
+   final String url = "https://jsonplaceholder.typicode.com/users/1";
+   final response = await http.get(url);
+   return json.decode(response.body);
 }
